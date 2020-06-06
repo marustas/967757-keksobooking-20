@@ -29,7 +29,7 @@ function getRandomIntInclusive(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-//Creates random number due to the massive length
+// Creates random number due to the massive length
 var getRandom = function (arr) {
   return Math.floor(Math.random() * arr.length - 1);
 };

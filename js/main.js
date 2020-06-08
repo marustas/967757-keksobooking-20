@@ -21,25 +21,25 @@ var ROOMS = 5;
 var GUEST = 4;
 var TITLE = 'Зоголовок';
 var DESCRIPTION = 'Описание';
-var COUNT_PINS = 8;
-
+var COUNT_OBJ = 8;
 var PIN_SIZE_X = 62;
 var PIN_SIZE_Y = 62;
 var PIN_POINTER_TOP = 18;
 
-// Creates random number
+
+// creates random number due to the massive length
 function getRandomIntInclusive(min, max) {
   min = Math.ceil(min);
   max = Math.floor(max);
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-// Creates random number due to the massive length
+// creates random number
 var getRandom = function (arr) {
-  return Math.ceil(Math.random() * arr.length - 1);
+  return Math.floor(Math.random() * arr.length - 1);
 };
 
-// Returns uniq massive
+// returns uniq massive
 var getUniqRandomArray = function (array, randomNumber) {
   var arr = [];
   while (arr.length < randomNumber) {
@@ -91,7 +91,7 @@ var getLocationY = function () {
 // Returns ad
 var getObjects = function () {
   var pins = [];
-  for (var i = 0; i < COUNT_PINS; i++) {
+  for (var i = 0; i < COUNT_OBJ; i++) {
     pins[i] = {
       author: {
         avatar: 'img/avatars/user0' + (i + 1) + '.png'
@@ -130,7 +130,7 @@ var dellAttributeDisable = function (elem) {
 };
 
 var openMap = function () {
-  map.classList.remove('map--faded');
+  element.classList.remove('map--faded');
   formVision.classList.remove('ad-form--disabled');
   mapVision.removeAttribute('disabled');
   dellAttributeDisable(mapsFilters);
@@ -138,7 +138,7 @@ var openMap = function () {
 };
 
 
-var map = document.querySelector('.map');
+var element = document.querySelector('.map');
 
 var formVision = document.querySelector('.ad-form');
 formVision.classList.add('ad-form--disabled');
@@ -194,7 +194,7 @@ var renderPins = function () {
   return result;
 };
 
-var pinContainerElem = map.querySelector('.map__pins');
+var pinContainerElem = element.querySelector('.map__pins');
 pinContainerElem.appendChild(renderPins());
 
 // 3-3
@@ -259,8 +259,8 @@ var renderCard = function () {
   return result;
 };
 
-var mapPopup = map.querySelector('.map__filters-container');
-map.insertBefore(renderCard(), mapPopup);
+var mapPopup = element.querySelector('.map__filters-container');
+element.insertBefore(renderCard(), mapPopup);
 
 // Validation
 

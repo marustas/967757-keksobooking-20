@@ -205,30 +205,3 @@ var renderCard = function () {
 var mapPopup = element.querySelector('.map__filters-container');
 element.insertBefore(renderCard(), mapPopup);
 
-// Validation
-
-var onRoomsChange = function () {
-
-  guests.setCustomValidity('');
-
-  if (rooms.value === '1' && guests.value !== '1') {
-    guests.setCustomValidity('В комнате может находиться только 1 гость');
-  } else if (guests.value !== '2' && guests.value !== '1' && rooms.value === '2') {
-    guests.setCustomValidity('В комнате может находиться только 1 или 2 гостя');
-  } else if (rooms.value === '3' && guests.value === '0') {
-    guests.setCustomValidity('В комнате может находиться 1 или 2 или 3 гостя');
-  } else if (rooms.value === '100' && guests.value !== '0') {
-    guests.setCustomValidity('"Это не жилое помещение');
-  } else {
-    guests.setCustomValidity('');
-  }
-};
-
-var rooms = document.querySelector('#room_number');
-var guests = document.querySelector('#capacity');
-
-onRoomsChange();
-
-element.addEventListener('change', function () {
-  onRoomsChange();
-});

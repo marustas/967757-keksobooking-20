@@ -1,6 +1,5 @@
 'use strict';
 
-var ENTER_KEYCODE = 13;
 var TYPE = ['palace', 'flat', 'house', 'bungalo'];
 var CHECKIN_TIME = ['12:00', '13:00', '14:00'];
 var CHECKOUT_TIME = ['12:00', '13:00', '14:00'];
@@ -22,24 +21,20 @@ var GUEST = 4;
 var TITLE = 'Зоголовок';
 var DESCRIPTION = 'Описание';
 var COUNT_OBJ = 8;
-var PIN_SIZE_X = 62;
-var PIN_SIZE_Y = 62;
-var PIN_POINTER_TOP = 18;
 
-
-// creates random number due to the massive length
+// Creates random number
 function getRandomIntInclusive(min, max) {
   min = Math.ceil(min);
   max = Math.floor(max);
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-// creates random number
+// Creates random number due to the massive length
 var getRandom = function (arr) {
   return Math.floor(Math.random() * arr.length - 1);
 };
 
-// returns uniq massive
+// Returns uniq massive
 var getUniqRandomArray = function (array, randomNumber) {
   var arr = [];
   while (arr.length < randomNumber) {
@@ -67,7 +62,7 @@ var getCheckout = function () {
 };
 
 var getAddress = function (x, y) {
-  return x + ', ' + y;
+  return x + ',' + y;
 };
 
 var getPhotos = function () {
@@ -118,60 +113,8 @@ var getObjects = function () {
   return pins;
 };
 
-var setAttributeDisable = function (elem) {
-  for (var i = 0; i < elem.length; i++) {
-    elem[i].setAttribute('disabled', 'disabled');
-  }
-};
-var dellAttributeDisable = function (elem) {
-  for (var i = 0; i < elem.length; i++) {
-    elem[i].removeAttribute('disabled');
-  }
-};
-
-var openMap = function () {
-  element.classList.remove('map--faded');
-  formVision.classList.remove('ad-form--disabled');
-  mapVision.removeAttribute('disabled');
-  dellAttributeDisable(mapsFilters);
-  dellAttributeDisable(inputVision);
-};
-
-
 var element = document.querySelector('.map');
-
-var formVision = document.querySelector('.ad-form');
-formVision.classList.add('ad-form--disabled');
-
-var mapVision = document.querySelector('.map__filters');
-var mapsFilters = mapVision.querySelectorAll('.map__filter');
-setAttributeDisable(mapsFilters);
-
-var inputVision = formVision.querySelectorAll('fieldset');
-setAttributeDisable(inputVision);
-
-var activeAction = document.querySelector('.map__pin--main');
-
-var xPin = activeAction.offsetLeft;
-var yPin = activeAction.offsetTop;
-
-var setlocation = document.querySelector('#address');
-var addressDefaultX = xPin + (PIN_SIZE_X / 2);
-var addressDefaultY = yPin + (PIN_SIZE_Y / 2);
-setlocation.setAttribute('value', getAddress(addressDefaultX, addressDefaultY));
-
-activeAction.addEventListener('mousedown', function () {
-  openMap();
-  var pinPointerX = xPin + (PIN_SIZE_X / 2);
-  var pinPointerY = yPin + PIN_SIZE_Y + PIN_POINTER_TOP;
-  setlocation.setAttribute('value', getAddress(pinPointerX, pinPointerY));
-});
-
-activeAction.addEventListener('keydown', function (evt) {
-  if (evt.keyCode === ENTER_KEYCODE) {
-    openMap();
-  }
-});
+element.classList.remove('map--faded');
 
 var pinTemplate = document.querySelector('#pin')
   .content.querySelector('.map__pin');
@@ -286,6 +229,6 @@ var guests = document.querySelector('#capacity');
 
 onRoomsChange();
 
-formVision.addEventListener('change', function () {
+element.addEventListener('change', function () {
   onRoomsChange();
 });

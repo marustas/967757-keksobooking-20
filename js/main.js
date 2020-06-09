@@ -140,6 +140,7 @@ var renderPins = function () {
 var pinContainerElem = element.querySelector('.map__pins');
 pinContainerElem.appendChild(renderPins());
 
+
 // 3-3
 var getTypeCard = function (type) {
   var result = '';
@@ -232,3 +233,4 @@ onRoomsChange();
 element.addEventListener('change', function () {
   onRoomsChange();
 });
+

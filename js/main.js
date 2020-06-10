@@ -140,6 +140,7 @@ var renderPins = function () {
 var pinContainerElem = element.querySelector('.map__pins');
 pinContainerElem.appendChild(renderPins());
 
+
 var getTypeCard = function (type) {
   switch (type) {
     case 'flat':

@@ -140,25 +140,20 @@ var renderPins = function () {
 var pinContainerElem = element.querySelector('.map__pins');
 pinContainerElem.appendChild(renderPins());
 
-// 3-3
 var getTypeCard = function (type) {
-  var result = '';
   switch (type) {
     case 'flat':
-      result = 'Квартира';
-      break;
+      return 'Квартира';
     case 'bungalo':
-      result = 'Бунгало';
-      break;
+      return 'Бунгало';
     case 'house':
-      result = 'Дом';
-      break;
+      return 'Дом';
     case 'palace':
-      result = 'Дворец ';
-      break;
+      return 'Дворец ';
   }
-  return result;
+  return type;
 };
+
 
 var cardTemplate = document.querySelector('#card')
   .content.querySelector('.map__card');

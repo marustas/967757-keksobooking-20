@@ -155,7 +155,6 @@ var getTypeCard = function (type) {
   return type;
 };
 
-
 var cardTemplate = document.querySelector('#card')
   .content.querySelector('.map__card');
 

@@ -1,5 +1,6 @@
 'use strict';
 
+var ENTER_KEYCODE = 13;
 var TYPE = ['palace', 'flat', 'house', 'bungalo'];
 var CHECKIN_TIME = ['12:00', '13:00', '14:00'];
 var CHECKOUT_TIME = ['12:00', '13:00', '14:00'];
@@ -20,7 +21,11 @@ var ROOMS = 5;
 var GUEST = 4;
 var TITLE = 'Зоголовок';
 var DESCRIPTION = 'Описание';
-var COUNT_OBJ = 8;
+var COUNT_PINS = 8;
+
+var PIN_SIZE_X = 62;
+var PIN_SIZE_Y = 62;
+var PIN_POINTER_TOP = 18;
 
 // Creates random number
 function getRandomIntInclusive(min, max) {
@@ -62,7 +67,7 @@ var getCheckout = function () {
 };
 
 var getAddress = function (x, y) {
-  return x + ',' + y;
+  return x + ', ' + y;
 };
 
 var getPhotos = function () {
@@ -86,7 +91,7 @@ var getLocationY = function () {
 // Returns ad
 var getObjects = function () {
   var pins = [];
-  for (var i = 0; i < COUNT_OBJ; i++) {
+  for (var i = 0; i < COUNT_PINS; i++) {
     pins[i] = {
       author: {
         avatar: 'img/avatars/user0' + (i + 1) + '.png'
@@ -113,12 +118,66 @@ var getObjects = function () {
   return pins;
 };
 
+var setAttributeDisable = function (elem) {
+  for (var i = 0; i < elem.length; i++) {
+    elem[i].setAttribute('disabled', 'disabled');
+  }
+};
+var dellAttributeDisable = function (elem) {
+  for (var i = 0; i < elem.length; i++) {
+    elem[i].removeAttribute('disabled');
+  }
+};
+
+var openMap = function () {
+  element.classList.remove('map--faded');
+  formVision.classList.remove('ad-form--disabled');
+  mapVision.removeAttribute('disabled');
+  dellAttributeDisable(mapsFilters);
+  dellAttributeDisable(inputVision);
+};
+
+
 var element = document.querySelector('.map');
-element.classList.remove('map--faded');
+
+var formVision = document.querySelector('.ad-form');
+formVision.classList.add('ad-form--disabled');
+
+var mapVision = document.querySelector('.map__filters');
+var mapsFilters = mapVision.querySelectorAll('.map__filter');
+setAttributeDisable(mapsFilters);
+
+var inputVision = formVision.querySelectorAll('fieldset');
+setAttributeDisable(inputVision);
+
+var activeAction = document.querySelector('.map__pin--main');
+
+var xPin = activeAction.offsetLeft;
+var yPin = activeAction.offsetTop;
+
+var setlocation = document.querySelector('#address');
+var adressDefaultX = xPin + (PIN_SIZE_X / 2);
+var adressDefaultY = yPin + (PIN_SIZE_Y / 2);
+setlocation.setAttribute('value', getAddress(adressDefaultX, adressDefaultY));
+
+activeAction.addEventListener('mousedown', function () {
+  openMap();
+  var pinPointerX = xPin + (PIN_SIZE_X / 2);
+  var pinPointerY = yPin + PIN_SIZE_Y + PIN_POINTER_TOP;
+  setlocation.setAttribute('value', getAddress(pinPointerX, pinPointerY));
+});
+
+activeAction.addEventListener('keydown', function (evt) {
+  if (evt.keyCode === ENTER_KEYCODE) {
+    openMap();
+  }
+});
 
 var pinTemplate = document.querySelector('#pin')
   .content.querySelector('.map__pin');
 
+var pinContainerElem = element.querySelector('.map__pins');
+pinContainerElem.appendChild(renderPins());
 var dataItemFragment = function (item) {
   var pin = pinTemplate.cloneNode(true);
   pin.style.left = item.location.x + 'px';
@@ -136,10 +195,6 @@ var renderPins = function () {
   }
   return result;
 };
-
-var pinContainerElem = element.querySelector('.map__pins');
-pinContainerElem.appendChild(renderPins());
-
 
 var getTypeCard = function (type) {
   switch (type) {
@@ -200,3 +255,30 @@ var renderCard = function () {
 var mapPopup = element.querySelector('.map__filters-container');
 element.insertBefore(renderCard(), mapPopup);
 
+
+// Validation
+var onRoomsChange = function () {
+
+  guests.setCustomValidity('');
+
+  if (rooms.value === '1' && guests.value !== '1') {
+    guests.setCustomValidity('В комнате может находиться только 1 гость');
+  } else if (guests.value !== '2' && guests.value !== '1' && rooms.value === '2') {
+    guests.setCustomValidity('В комнате может находиться только 1 или 2 гостя');
+  } else if (rooms.value === '3' && guests.value === '0') {
+    guests.setCustomValidity('В комнате может находиться 1 или 2 или 3 гостя');
+  } else if (rooms.value === '100' && guests.value !== '0') {
+    guests.setCustomValidity('"Это не жилое помещение');
+  } else {
+    guests.setCustomValidity('');
+  }
+};
+
+var rooms = document.querySelector('#room_number');
+var guests = document.querySelector('#capacity');
+
+onRoomsChange();
+
+formVision.addEventListener('change', function () {
+  onRoomsChange();
+});

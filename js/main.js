@@ -129,6 +129,7 @@ var dellAttributeDisable = function (elem) {
   }
 };
 
+
 var openMap = function () {
   element.classList.remove('map--faded');
   formVision.classList.remove('ad-form--disabled');
@@ -160,13 +161,26 @@ var adressDefaultX = xPin + (PIN_SIZE_X / 2);
 var adressDefaultY = yPin + (PIN_SIZE_Y / 2);
 setlocation.setAttribute('value', getAddress(adressDefaultX, adressDefaultY));
 
-activeAction.addEventListener('mousedown', function () {
+activeAction.addEventListener('mousedown', mouseButton, function () {
   openMap();
   var pinPointerX = xPin + (PIN_SIZE_X / 2);
   var pinPointerY = yPin + PIN_SIZE_Y + PIN_POINTER_TOP;
   setlocation.setAttribute('value', getAddress(pinPointerX, pinPointerY));
 });
 
+var mouseButton = function (e) {
+  if (typeof e === 'object') {
+    switch (e.button) {
+      case 0:
+        return 'Left button clicked.';
+      case 1:
+        return 'Middle button clicked.';
+      case 2:
+        return 'Right button clicked.';
+    }
+  }
+  return mouseButton();
+};
 activeAction.addEventListener('keydown', function (evt) {
   if (evt.keyCode === ENTER_KEYCODE) {
     openMap();

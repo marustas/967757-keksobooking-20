@@ -1,5 +1,6 @@
 'use strict';
 
+var ENTER_KEYCODE = 13;
 var TYPE = ['palace', 'flat', 'house', 'bungalo'];
 var CHECKIN_TIME = ['12:00', '13:00', '14:00'];
 var CHECKOUT_TIME = ['12:00', '13:00', '14:00'];
@@ -20,7 +21,11 @@ var ROOMS = 5;
 var GUEST = 4;
 var TITLE = 'Зоголовок';
 var DESCRIPTION = 'Описание';
-var COUNT_OBJ = 8;
+var COUNT_PINS = 8;
+
+var PIN_SIZE_X = 62;
+var PIN_SIZE_Y = 62;
+var PIN_POINTER_TOP = 18;
 
 // Creates random number
 function getRandomIntInclusive(min, max) {
@@ -62,7 +67,7 @@ var getCheckout = function () {
 };
 
 var getAddress = function (x, y) {
-  return x + ',' + y;
+  return x + ', ' + y;
 };
 
 var getPhotos = function () {
@@ -86,7 +91,7 @@ var getLocationY = function () {
 // Returns ad
 var getObjects = function () {
   var pins = [];
-  for (var i = 0; i < COUNT_OBJ; i++) {
+  for (var i = 0; i < COUNT_PINS; i++) {
     pins[i] = {
       author: {
         avatar: 'img/avatars/user0' + (i + 1) + '.png'
@@ -113,8 +118,60 @@ var getObjects = function () {
   return pins;
 };
 
+var setAttributeDisable = function (elem) {
+  for (var i = 0; i < elem.length; i++) {
+    elem[i].setAttribute('disabled', 'disabled');
+  }
+};
+var dellAttributeDisable = function (elem) {
+  for (var i = 0; i < elem.length; i++) {
+    elem[i].removeAttribute('disabled');
+  }
+};
+
+var openMap = function () {
+  element.classList.remove('map--faded');
+  formVision.classList.remove('ad-form--disabled');
+  mapVision.removeAttribute('disabled');
+  dellAttributeDisable(mapsFilters);
+  dellAttributeDisable(inputVision);
+};
+
+
 var element = document.querySelector('.map');
-element.classList.remove('map--faded');
+
+var formVision = document.querySelector('.ad-form');
+formVision.classList.add('ad-form--disabled');
+
+var mapVision = document.querySelector('.map__filters');
+var mapsFilters = mapVision.querySelectorAll('.map__filter');
+setAttributeDisable(mapsFilters);
+
+var inputVision = formVision.querySelectorAll('fieldset');
+setAttributeDisable(inputVision);
+
+var activeAction = document.querySelector('.map__pin--main');
+
+var xPin = activeAction.offsetLeft;
+var yPin = activeAction.offsetTop;
+
+var setlocation = document.querySelector('#address');
+var adressDefaultX = xPin + (PIN_SIZE_X / 2);
+var adressDefaultY = yPin + (PIN_SIZE_Y / 2);
+setlocation.setAttribute('value', getAddress(adressDefaultX, adressDefaultY));
+
+activeAction.addEventListener('mousedown', function () {
+  openMap();
+  var pinPointerX = xPin + (PIN_SIZE_X / 2);
+  var pinPointerY = yPin + PIN_SIZE_Y + PIN_POINTER_TOP;
+  setlocation.setAttribute('value', getAddress(pinPointerX, pinPointerY));
+});
+
+activeAction.addEventListener('keydown', function (evt) {
+  if (evt.keyCode === ENTER_KEYCODE) {
+    openMap();
+  }
+});
 
 var pinTemplate = document.querySelector('#pin')
   .content.querySelector('.map__pin');
@@ -140,63 +197,30 @@ var renderPins = function () {
 var pinContainerElem = element.querySelector('.map__pins');
 pinContainerElem.appendChild(renderPins());
 
+// Validation
 
-var getTypeCard = function (type) {
-  switch (type) {
-    case 'flat':
-      return 'Квартира';
-    case 'bungalo':
-      return 'Бунгало';
-    case 'house':
-      return 'Дом';
-    case 'palace':
-      return 'Дворец ';
+var onRoomsChange = function () {
+
+  guests.setCustomValidity('');
+
+  if (rooms.value === '1' && guests.value !== '1') {
+    guests.setCustomValidity('В комнате может находиться только 1 гость');
+  } else if (guests.value !== '2' && guests.value !== '1' && rooms.value === '2') {
+    guests.setCustomValidity('В комнате может находиться только 1 или 2 гостя');
+  } else if (rooms.value === '3' && guests.value === '0') {
+    guests.setCustomValidity('В комнате может находиться 1 или 2 или 3 гостя');
+  } else if (rooms.value === '100' && guests.value !== '0') {
+    guests.setCustomValidity('"Это не жилое помещение');
+  } else {
+    guests.setCustomValidity('');
   }
-  return type;
 };
 
-var cardTemplate = document.querySelector('#card')
-  .content.querySelector('.map__card');
+var rooms = document.querySelector('#room_number');
+var guests = document.querySelector('#capacity');
 
-var cardItemFragment = function (item) {
-  var card = cardTemplate.cloneNode(true);
-  card.querySelector('.popup__title').textContent = item.offer.title;
-  card.querySelector('.popup__text--address').textContent = item.offer.address;
-  card.querySelector('.popup__text--price').textContent = item.offer.price + ' ₽/ночь';
-  card.querySelector('.popup__type').textContent = getTypeCard(item.offer.type);
-  card.querySelector('.popup__text--capacity').textContent = item.offer.guests + 'комнаты для ' + item.offer.rooms + ' гостей';
-  card.querySelector('.popup__text--time').textContent = 'Заезд после ' + item.offer.checkout + ' , выезд до ' + item.offer.checkin;
-  card.querySelector('.popup__description').textContent = item.offer.description;
-  card.querySelector('.popup__avatar').src = item.author.avatar;
+onRoomsChange();
 
-  var features = card.querySelector('.popup__features');
-  for (var j = 0; j < item.offer.features.length; j++) {
-    if (item.offer.features.indexOf(item.offer.features[j]) >= 0) {
-      var elementForFeatures = document.createElement('li');
-      elementForFeatures.classList.add('popup__feature', 'popup__feature--' + item.offer.features[j]);
-      features.appendChild(elementForFeatures);
-    }
-  }
-
-  var photos = card.querySelector('.popup__photos');
-  for (var z = 0; z < item.offer.photos.length; z++) {
-    var img = document.createElement('img');
-    img.classList.add('popup__photo');
-    img.src = item.offer.photos[z];
-    img.alt = 'Фотография жилья';
-    img.style.width = '45px';
-    img.style.height = '40px';
-    photos.appendChild(img);
-  }
-  return card;
-};
-
-var renderCard = function () {
-  var result = document.createDocumentFragment();
-  result.appendChild(cardItemFragment(getObjects()[0]));
-  return result;
-};
-
-var mapPopup = element.querySelector('.map__filters-container');
-element.insertBefore(renderCard(), mapPopup);
-
+formVision.addEventListener('change', function () {
+  onRoomsChange();
+});

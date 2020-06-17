@@ -134,14 +134,13 @@ var dellAttributeDisable = function (elem) {
   }
 };
 
-var openMap = function () {
+var openMap = function (map) {
   map.classList.remove('map--faded');
   formVision.classList.remove('ad-form--disabled');
   mapVision.removeAttribute('disabled');
   dellAttributeDisable(mapsFilters);
   dellAttributeDisable(inputVision);
 };
-
 
 var map = document.querySelector('.map');
 
@@ -166,7 +165,7 @@ var addressDefaultY = yPin + (PIN_SIZE_Y / 2);
 setlocation.setAttribute('value', getAddress(addressDefaultX, addressDefaultY));
 
 activeAction.addEventListener('mousedown', function () {
-  openMap();
+  openMap(map);
   var pinPointerX = xPin + (PIN_SIZE_X / 2);
   var pinPointerY = yPin + PIN_SIZE_Y + PIN_POINTER_TOP;
   setlocation.setAttribute('value', getAddress(pinPointerX, pinPointerY));

@@ -1,31 +1,31 @@
 'use strict';
+
 (function () {
-  var WIDTH_PIN = 50;
-  var HEIGHT_PIN = 70;
-
-  var mapPinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
-  var similarMapPin = document.querySelector('.map__pins');
-
-  var createMapPin = function (pin) {
-    var mapPin = mapPinTemplate.cloneNode(true);
-    mapPin.style.left = (pin.location.x - WIDTH_PIN / 2) + 'px';
-    mapPin.style.top = (pin.location.y - HEIGHT_PIN) + 'px';
-    mapPin.querySelector('img').src = pin.author.avatar;
-    mapPin.querySelector('img').alt = pin.offer.title;
-    return mapPin;
-  };
-  var renderMapPin = function () {
+  window.drawPins = function (adsList) {
+    var mapPins = document.querySelector('.map__pins');
     var fragment = document.createDocumentFragment();
-    for (var i = 0; i < window.ads.length; i++) {
-      fragment.appendChild(createMapPin(window.ads[i]));
+
+    for (var i = 0; i < adsList.length; i++) {
+      var pin = renderPin(adsList[i]);
+      pin.id = [i];
+      fragment.appendChild(pin);
     }
-    similarMapPin.appendChild(fragment);
+
+    return mapPins.appendChild(fragment);
   };
 
+  var PIN_WIDTH = 50;
+  var PIN_HEIGHT = 70;
 
-  window.pin = {
-    WIDTH_PIN: WIDTH_PIN,
-    renderMapPin: renderMapPin,
+  var renderPin = function (advertisement) {
+    var template = document.querySelector('#pin').content.querySelector('.map__pin');
+    var element = template.cloneNode(true);
+
+    element.style.left = advertisement.location.x - (PIN_WIDTH / 2) + 'px';
+    element.style.top = advertisement.location.y - PIN_HEIGHT + 'px';
+    element.querySelector('img').src = advertisement.author.avatar;
+    element.querySelector('img').alt = advertisement.offer.title;
+
+    return element;
   };
-
 })();

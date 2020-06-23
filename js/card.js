@@ -1,62 +1,44 @@
+
 'use strict';
+
 (function () {
-  var map = document.querySelector('.map');
-  var offerCardTemplate = document.querySelector('#card').content.querySelector('.map__card');
+  window.drawMapCard = function (adsNumber) {
+    var fragment = document.createDocumentFragment();
+    fragment.appendChild(renderMapCard(window.data.createAds(window.data.ADS_NUMBER)[adsNumber]));
 
-  var createPhotosHtml = function (photos) {
-    var photoTag = '';
-    for (var i = 0; i < photos.length; i++) {
-      photoTag += '<img src="' + photos[i] + '" class="popup__photo" width="45" height="40" alt="Фотография жилья">';
+    return document.querySelector('.map .map__filters-container').before(fragment);
+  };
+
+  var TYPES_HOUSING_RU = {
+    palace: 'Дворец',
+    flat: 'Квартира',
+    house: 'Дом',
+    bungalo: 'Бунгало',
+  };
+
+  var removeChild = function (element) {
+    while (element.firstChild) {
+      element.removeChild(element.firstChild);
     }
-    return photoTag;
   };
 
-  var createFeaturesHtml = function (features) {
-    var featuresTag = '';
-    for (var i = 0; i < features.length; i++) {
-      featuresTag += '<li class="popup__feature popup__feature--' + features[i] + '">' + features[i] + '</li>';
-    }
-    return featuresTag;
-  };
+  var renderMapCard = function (advertisement) {
+    var template = document.querySelector('#card').content.querySelector('.map__card');
+    var mapCard = template.cloneNode(true);
 
-  var createOfferCard = function (ad) {
-    var offerCard = offerCardTemplate.cloneNode(true);
-    var type = {
-      'flat': 'Квартира',
-      'bungalo': 'Бунгало',
-      'house': 'Дом',
-      'palace': 'Дворец'
-    };
-    offerCard.querySelector('.popup__title').textContent = ad.offer.title;
-    offerCard.querySelector('.popup__text--address').textContent = ad.offer.address;
-    offerCard.querySelector('.popup__text--price').textContent = ad.offer.price + '₽/ночь';
-    offerCard.querySelector('.popup__type').textContent = type[ad.offer.type];
-    offerCard.querySelector('.popup__text--capacity').textContent = ad.offer.rooms + ' комнаты для ' + ad.offer.guests + ' гостей.';
-    offerCard.querySelector('.popup__text--time').textContent = 'Заезд после ' + ad.offer.checkin + ', выезд до ' + ad.offer.checkout;
-    offerCard.querySelector('.popup__features').innerHTML = createFeaturesHtml(ad.offer.features);
-    offerCard.querySelector('.popup__description').textContent = ad.offer.description;
-    offerCard.querySelector('.popup__photos').innerHTML = createPhotosHtml(ad.offer.photos);
-    offerCard.querySelector('.popup__avatar').src = ad.author.avatar;
-    return offerCard;
-  };
+    mapCard.querySelector('.popup__title').textContent = advertisement.offer.title;
+    mapCard.querySelector('.popup__text--address').textContent = advertisement.offer.address;
+    mapCard.querySelector('.popup__text--price').textContent = advertisement.offer.price + '₽/ночь';
+    mapCard.querySelector('.popup__type').textContent = TYPES_HOUSING_RU[advertisement.offer.type];
+    mapCard.querySelector('.popup__text--capacity').textContent = advertisement.offer.rooms + ' комнаты для ' + advertisement.offer.guests + ' гостей';
+    mapCard.querySelector('.popup__text--time').textContent = 'Заезд после ' + advertisement.offer.checkin + ', выезд до ' + advertisement.offer.checkout;
+    removeChild(mapCard.querySelector('.popup__features'));
+    mapCard.querySelector('.popup__features').appendChild(window.data.renderFeatures(advertisement.offer.features));
+    mapCard.querySelector('.popup__description').textContent = advertisement.offer.description;
+    removeChild(mapCard.querySelector('.popup__photos'));
+    mapCard.querySelector('.popup__photos').appendChild(window.data.renderPhotos(advertisement.offer.photos));
+    mapCard.querySelector('.popup__avatar').src = advertisement.author.avatar;
 
-  var removeCard = function () {
-    map.querySelector('.popup__close').removeEventListener('click', removeCard);
-    document.removeEventListener('keydown', cardEscPressHandler);
-    map.querySelector('.map__card').remove();
+    return mapCard;
   };
-
-  var cardEscPressHandler = function (evt) {
-    window.util.escEvent(evt, removeCard);
-  };
-
-  window.card.renderAd = function (currentAd) {
-    if (map.querySelector('.map__card')) {
-      removeCard();
-    }
-    map.insertBefore(createOfferCard(currentAd), document.querySelector('.map__filters-container'));
-    map.querySelector('.popup__close').addEventListener('click', removeCard);
-    document.addEventListener('keydown', cardEscPressHandler);
-  };
-
 })();

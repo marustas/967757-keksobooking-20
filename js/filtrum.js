@@ -32,7 +32,7 @@
     return it.value === 'any' ? true : it.value === item[key].toString();
   };
 
-  var filterByType = function (item) {
+  var filterByTYpe = function (item) {
     return filterItem(typeSelect, item.offer, 'type');
   };
 
@@ -72,7 +72,7 @@
 
   var onFilterChange = function () {
     filteredData = data.slice(0);
-    filteredData = filteredData.filter(filterByType);
+    filteredData = filteredData.filter(filterByTYpe);
     filteredData = filteredData.filter(filterByPrice);
     filteredData = filteredData.filter(filterByRooms);
     filteredData = filteredData.filter(filterByGuests);

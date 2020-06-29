@@ -1,52 +1,33 @@
+
 'use strict';
 
 (function () {
-  var TIMEOUT_DURATION = 1000;
-  var STATUS_OK = 200;
+  var UPLOAD = 'https://javascript.pages.academy/keksobooking';
+  var LOAD = 'https://javascript.pages.academy/keksobooking/data';
 
-  var handleErrors = function (xhr, load, error) {
+  var setup = function (onLoad) {
+    var xhr = new XMLHttpRequest();
+    xhr.responseType = 'json';
+
     xhr.addEventListener('load', function () {
-      if (xhr.status === STATUS_OK) {
-        load(xhr.response);
-      } else {
-        error('Статус ответа: ' + xhr.status + ' ' + xhr.statusText);
-      }
+      onLoad(xhr.response);
     });
-    xhr.addEventListener('error', function () {
-      error('Произошла ошибка соединения');
-    });
-    xhr.addEventListener('timeout', function () {
-      error('Запрос не успел выполниться за ' + xhr.timeout + 'мс');
-    });
+
+    return xhr;
   };
 
   window.backend = {
-    load: function (onLoad, onError) {
-      var URL = 'https://javascript.pages.academy/keksobooking/data';
-
-      var xhr = new XMLHttpRequest();
-      xhr.responseType = 'json';
-
-      handleErrors(xhr, onLoad, onError);
-
-      xhr.addEventListener('load', function () {
-        if (xhr.status === STATUS_OK) {
-          onLoad(xhr.response);
-        } else {
-          onError('Статус ответа: ' + xhr.status + ' ' + xhr.statusText);
-        }
-      });
-      xhr.addEventListener('error', function () {
-        onError('Произошла ошибка соединения');
-      });
-      xhr.addEventListener('timeout', function () {
-        onError('Запрос не успел выполниться за ' + xhr.timeout + 'мс');
-      });
-
-      xhr.timeout = TIMEOUT_DURATION;
-
-      xhr.open('GET', URL);
-      xhr.send();
+    upload: function (data, onLoad) {
+      var xhr = setup(onLoad);
+      xhr.open('POST', UPLOAD);
+      xhr.send(data);
     },
+
+    load: function (onLoad) {
+      var xhr = setup(onLoad);
+      xhr.open('GET', LOAD);
+      xhr.send();
+    }
   };
+
 })();

@@ -1,44 +1,47 @@
 'use strict';
 
 (function () {
-  window.data = {
-    ADS_NUMBER: 8,
-    renderPhotos: function (photos) {
-      var template = document.querySelector('#card').content.querySelector('.popup__photos .popup__photo');
-      var fragment = document.createDocumentFragment();
 
-      for (var i = 0; i < photos.length; i++) {
-        var element = template.cloneNode(true);
-        element.src = photos[i];
-        fragment.appendChild(element);
-      }
+  var MOCK_DATA = [];
+  var PINS_NUMBERS = 20;
 
-      return fragment;
-    },
-    renderFeatures: function (list) {
-      var template = document.querySelector('#card').content.querySelector('.popup__features');
-      var element = template.cloneNode(true);
-      var fragment = document.createDocumentFragment();
-
-      for (var i = 0; i < list.length; i++) {
-        var currentElement = element.querySelector('.popup__feature--' + list[i]);
-        fragment.appendChild(currentElement);
-      }
-
-      return fragment;
-    },
-    errorHandler: function (errorMessage) {
-      var template = document.querySelector('#error').content.querySelector('.error');
-      var element = template.cloneNode(true);
-      var fragment = document.createDocumentFragment();
-
-      var node = document.createElement('p');
-      node.style = 'font-size: 30px; color: #ffffff;';
-      node.textContent = errorMessage;
-      element.appendChild(node);
-
-      fragment.appendChild(element);
-      document.querySelector('main').appendChild(fragment);
+  var generateData = function (data, fakeData, count, areAll) {
+    var index = 0;
+    if (areAll === true) {
+      count = data.length;
     }
+    while (index !== count) {
+      var dataItem = data[index];
+      fakeData.push({
+        author: {
+          avatar: dataItem.author.avatar
+        },
+        offer: {
+          title: dataItem.offer.title,
+          address: dataItem.offer.address,
+          price: dataItem.offer.price,
+          type: dataItem.offer.type,
+          rooms: dataItem.offer.rooms,
+          guests: dataItem.offer.guests,
+          checkin: dataItem.offer.checkin,
+          checkout: dataItem.offer.checkout,
+          features: dataItem.offer.features,
+          description: dataItem.offer.description,
+          photos: dataItem.offer.photos,
+        },
+        location: {
+          x: dataItem.location.x,
+          y: dataItem.location.y
+        }
+      });
+
+      index++;
+    }
+  };
+
+  window.data = {
+    generateData: generateData,
+    MOCK_DATA: MOCK_DATA,
+    PINS_NUMBERS: PINS_NUMBERS
   };
 })();

@@ -1,33 +1,66 @@
 'use strict';
 
 (function () {
-  window.drawPins = function (adsList) {
-    var mapPins = document.querySelector('.map__pins');
-    var fragment = document.createDocumentFragment();
 
-    for (var i = 0; i < adsList.length; i++) {
-      if (adsList[i].offer) {
-        var pin = renderPin(adsList[i]);
-        pin.id = [i];
-        fragment.appendChild(pin);
+  var DEFAULT_MAIN_PIN_X = 601;
+  var DEFAULT_MAIN_PIN_Y = 404;
+  var PinSize = {
+    WIDTH: 65,
+    HEIGHT: 65,
+  };
+
+  var map = document.querySelector('.map');
+  var mapCard = map.querySelector('.map__card');
+  var mapPins = map.querySelector('.map__pins');
+  var mapPinMain = map.querySelector('.map__pin--main');
+  var mapPin = document.querySelector('#pin').content.querySelector('.map__pin');
+
+  var renderPin = function (pin) {
+    var pinElement = mapPin.cloneNode(true);
+    var pinImg = pinElement.querySelector('img');
+
+    pinElement.style.left = pin.location.x + 'px';
+    pinElement.style.top = pin.location.y + 'px';
+
+    pinImg.src = pin.author.avatar;
+    pinImg.alt = pin.offer.title;
+
+    var pinClik = function () {
+      if (mapCard) {
+        mapCard.remove();
       }
+      window.card.createAd(pin);
+    };
+
+    var onPinEnter = function (evt) {
+      window.utils.keyEnter(evt, pinClik);
+    };
+
+    var onPinClik = function (evt) {
+      window.utils.mouseClik(evt, pinClik());
+    };
+
+    pinElement.addEventListener('keydown', onPinEnter);
+    pinElement.addEventListener('mousedown', onPinClik);
+
+    return pinElement;
+  };
+
+  window.pins = {
+
+    renderPins: function (offer) {
+      var fragment = document.createDocumentFragment();
+      offer.forEach(function (i) {
+        fragment.appendChild(renderPin(i));
+      });
+      mapPins.appendChild(fragment);
+    },
+
+    defaultPins: function () {
+      mapPinMain.style.top = DEFAULT_MAIN_PIN_Y - PinSize.HEIGHT / 2 + 'px';
+      mapPinMain.style.left = DEFAULT_MAIN_PIN_X - PinSize.WIDTH / 2 + 'px';
+
     }
-
-    return mapPins.appendChild(fragment);
   };
 
-  var PIN_WIDTH = 50;
-  var PIN_HEIGHT = 70;
-
-  var renderPin = function (advertisement) {
-    var template = document.querySelector('#pin').content.querySelector('.map__pin');
-    var element = template.cloneNode(true);
-
-    element.style.left = advertisement.location.x - (PIN_WIDTH / 2) + 'px';
-    element.style.top = advertisement.location.y - PIN_HEIGHT + 'px';
-    element.querySelector('img').src = advertisement.author.avatar;
-    element.querySelector('img').alt = advertisement.offer.title;
-
-    return element;
-  };
 })();

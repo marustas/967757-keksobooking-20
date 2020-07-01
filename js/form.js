@@ -46,23 +46,13 @@
         item.hidden = (ROOMS_CAPACITY[roomNumber.value].indexOf(item.value) >= 0) ? false : true;
       });
     } else {
-      capacityRoom.setCustomValidity('');
+      capacityRoom.setAttribute('');
     }
   };
 
-  var headline = function () {
-    if (addTitle.validity.tooShort) {
-      addTitle.setCustomValidity('Минимальная длина - ' + MIN_NAME_LENGTH + ' символов');
-    } else if (addTitle.validity.tooLong) {
-      addTitle.setCustomValidity('Максимальная длина - ' + MAX_NAME_LENGTH + ' символов');
-    } else if (addTitle.validity.valueMissing) {
-      addTitle.setCustomValidity('Обязательное текстовое поле');
-    } else {
-      addTitle.setCustomValidity('');
-    }
-  };
-
-  addTitle.addEventListener('invalid', headline);
+  addTitle.setAttribute('required', 'required');
+  addTitle.setAttribute('minlength', MIN_NAME_LENGTH);
+  addTitle.setAttribute('maxlength', MAX_NAME_LENGTH);
 
   var setPriceMin = function (input, data) {
     input.min = data;

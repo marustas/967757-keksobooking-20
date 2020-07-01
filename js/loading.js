@@ -12,37 +12,37 @@
 
   var uploadForm = function (evt) {
     var formData = new FormData(adForm);
-    window.backend.upload(formData, onUploadSuccess, onUploadErrors);
+    window.backend.upload(formData, uploadSucceed, uploadFail);
     evt.preventDefault();
   };
 
-  var onUploadSuccess = function () {
+  var uploadSucceed = function () {
     window.page.deactivatePage();
     adForm.reset();
     document.querySelector('main').appendChild(success);
     successElement = document.querySelector('.success');
   };
 
-  var onUploadErrors = function () {
+  var uploadFail = function () {
     document.querySelector('main').appendChild(error);
     errorElement = document.querySelector('.error');
   };
 
-  var onRemoveElementKey = function () {
+  var RemoveElementKey = function () {
     success.remove();
     error.remove();
   };
 
   var onKeyClose = function (evt) {
-    window.utils.keyEsc(evt, onRemoveElementKey);
-    window.utils.keyEsc(evt, onRemoveElementKey);
+    window.utils.keyEsc(evt, RemoveElementKey);
+    window.utils.keyEsc(evt, RemoveElementKey);
   };
 
   var onButtonClick = function () {
     error.remove();
   };
 
-  var onRemoveElementClick = function (evt) {
+  var removeElemClick = function (evt) {
     if (evt.target === successElement || errorElement) {
       success.remove();
       error.remove();
@@ -50,8 +50,8 @@
   };
 
   errorButton.addEventListener('click', onButtonClick);
-  success.addEventListener('click', onRemoveElementClick);
-  error.addEventListener('click', onRemoveElementClick);
+  success.addEventListener('click', removeElemClick);
+  error.addEventListener('click', removeElemClick);
 
   document.addEventListener('keydown', onKeyClose);
   document.addEventListener('keydown', onKeyClose);

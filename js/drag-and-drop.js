@@ -24,7 +24,7 @@
       y: evt.clientY
     };
 
-    var Border = {
+    var mapBorder = {
       TOP: DragLimit.Y.MIN - mapPinMain.offsetHeight,
       BOTTOM: DragLimit.Y.MAX - mapPinMain.offsetHeight,
       LEFT: DragLimit.X.MIN,
@@ -49,11 +49,11 @@
         y: mapPinMain.offsetTop - shift.y
       };
 
-      if (mapPinMainPosition.x >= Border.LEFT && mapPinMainPosition.x <= Border.RIGHT) {
+      if (mapPinMainPosition.x >= mapBorder.LEFT && mapPinMainPosition.x <= mapBorder.RIGHT) {
         mapPinMain.style.left = mapPinMainPosition.x + 'px';
       }
 
-      if (mapPinMainPosition.y >= Border.TOP && mapPinMainPosition.y <= Border.BOTTOM) {
+      if (mapPinMainPosition.y >= mapBorder.TOP && mapPinMainPosition.y <= mapBorder.BOTTOM) {
         mapPinMain.style.top = mapPinMainPosition.y + 'px';
       }
 

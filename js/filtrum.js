@@ -19,7 +19,7 @@
   };
 
   var filter = document.querySelector('.map__filters');
-  var filterItems = filter.querySelectorAll('select, input');
+  var itemFiltration = filter.querySelectorAll('select, input');
   var typeSelect = document.querySelector('#housing-type');
   var priceSelect = document.querySelector('#housing-price');
   var roomsSelect = document.querySelector('#housing-rooms');
@@ -28,12 +28,12 @@
   var data = [];
   var filteredData = [];
 
-  var filterItem = function (it, item, key) {
+  var filterItems = function (it, item, key) {
     return it.value === 'any' ? true : it.value === item[key].toString();
   };
 
-  var filterByTYpe = function (item) {
-    return filterItem(typeSelect, item.offer, 'type');
+  var filterByType = function (item) {
+    return filterItems(typeSelect, item.offer, 'type');
   };
 
   var filterByPrice = function (item) {
@@ -42,11 +42,11 @@
   };
 
   var filterByRooms = function (item) {
-    return filterItem(roomsSelect, item.offer, 'rooms');
+    return filterItems(roomsSelect, item.offer, 'rooms');
   };
 
   var filterByGuests = function (item) {
-    return filterItem(guestsSelect, item.offer, 'guests');
+    return filterItems(guestsSelect, item.offer, 'guests');
   };
 
   var filterByFeatures = function (item) {
@@ -72,7 +72,7 @@
 
   var onFilterChange = function () {
     filteredData = data.slice(0);
-    filteredData = filteredData.filter(filterByTYpe);
+    filteredData = filteredData.filter(filterByType);
     filteredData = filteredData.filter(filterByPrice);
     filteredData = filteredData.filter(filterByRooms);
     filteredData = filteredData.filter(filterByGuests);
@@ -83,7 +83,7 @@
   };
 
   var resetFilter = function () {
-    filterItems.forEach(function (it) {
+    itemFiltration.forEach(function (it) {
       it.value = 'any';
     });
     var featuresItems = featuresFieldset.querySelectorAll('input');
@@ -93,7 +93,7 @@
   };
 
   var activateFilter = function () {
-    filterItems.forEach(function (it) {
+    itemFiltration.forEach(function (it) {
       it.disabled = false;
     });
     onFilterChange();
@@ -101,7 +101,7 @@
   };
 
   var deactivateFilter = function () {
-    filterItems.forEach(function (it) {
+    itemFiltration.forEach(function (it) {
       it.disabled = true;
     });
     resetFilter();

@@ -9,7 +9,7 @@
     '3': ['3', '2', '1'],
     '100': ['0']
   };
-  var MinPriceTypes = {
+  var minPriceTypes = {
     'bungalo': 0,
     'flat': 1000,
     'house': 5000,
@@ -22,7 +22,7 @@
   var adForm = document.querySelector('.ad-form');
   var adFormReset = adForm.querySelector('.ad-form__reset');
   var addTitle = document.querySelector('#title');
-  var adPrice = document.querySelector('#price');
+  var adPrice = document.querySelector('#adPrice');
   var addType = document.querySelector('#type');
   var adTimein = document.querySelector('#timein');
   var adTimeout = document.querySelector('#timeout');
@@ -54,13 +54,9 @@
   addTitle.setAttribute('minlength', MIN_NAME_LENGTH);
   addTitle.setAttribute('maxlength', MAX_NAME_LENGTH);
 
-  var setPriceMin = function (input, data) {
-    input.min = data;
-    input.placeholder = data;
-  };
-
-  addType.addEventListener('change', function (evt) {
-    setPriceMin(adPrice, MinPriceTypes[evt.target.value]);
+  addType.addEventListener('change', function () {
+    adPrice.setAttribute('min', minPriceTypes[addType.value]);
+    adPrice.setAttribute('required', minPriceTypes[addType.value]);
   });
 
   adTimein.addEventListener('change', function (evt) {

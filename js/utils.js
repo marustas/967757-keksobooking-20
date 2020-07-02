@@ -1,7 +1,7 @@
 'use strict';
 
 (function () {
-  var MOUSE_LEFT_BUTTON = 0;
+  var MOUSE_LEFT = 0;
   var ESC_KEY = 'Escape';
   var ENTER_KEY = 'Enter';
   var DEBOUNCE_INTERVAL = 300;
@@ -9,7 +9,7 @@
 
   window.utils = {
     mouseClik: function (evt) {
-      return evt.button === MOUSE_LEFT_BUTTON;
+      return evt.button === MOUSE_LEFT;
     },
 
     keyEsc: function (evt, cd) {

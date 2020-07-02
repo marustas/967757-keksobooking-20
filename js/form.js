@@ -22,7 +22,7 @@
   var adForm = document.querySelector('.ad-form');
   var adFormReset = adForm.querySelector('.ad-form__reset');
   var addTitle = document.querySelector('#title');
-  var adPrice = document.querySelector('#adPrice');
+  var adPrice = document.querySelector('#price');
   var addType = document.querySelector('#type');
   var adTimein = document.querySelector('#timein');
   var adTimeout = document.querySelector('#timeout');

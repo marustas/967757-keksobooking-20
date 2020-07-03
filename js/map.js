@@ -8,18 +8,18 @@
   var mapPinMain = map.querySelector('.map__pin--main');
   var mapPins = map.querySelector('.map__pins');
   var adForm = document.querySelector('.ad-form');
-  var fieldsets = adForm.querySelectorAll('.ad-form__element');
+  var fieldset = adForm.querySelectorAll('.ad-form__element');
 
   var onLoadSuccess = function (adData) {
     window.filter.activateFiltration(adData);
   };
 
-  var findsFieldsetsDisconnects = function (disconnect) {
-    fieldsets.forEach(function (disa) {
-      disa.disabled = disconnect;
+  var disconnectFieldset = function (disconnect) {
+    fieldset.forEach(function (dis) {
+      dis.disabled = disconnect;
     });
   };
-  findsFieldsetsDisconnects(true);
+  disconnectFieldset(true);
 
   var removeCard = function () {
     var mapCard = document.querySelector('.map__card');
@@ -30,9 +30,9 @@
 
   var removePins = function () {
     var mapPinsChildren = [].slice.call(mapPins.children);
-    mapPinsChildren.forEach(function (el) {
-      if (el.classList.contains('map__pin') && !el.classList.contains('map__pin--main')) {
-        el.remove();
+    mapPinsChildren.forEach(function (elem) {
+      if (elem.classList.contains('map__pin') && !elem.classList.contains('map__pin--main')) {
+        elem.remove();
       }
     });
   };
@@ -56,7 +56,7 @@
     window.backend.load(onLoadSuccess);
     if (isActivate) {
       toggleActivation();
-      findsFieldsetsDisconnects(false);
+      disconnectFieldset(false);
       isActivate = false;
     }
   };
@@ -67,7 +67,7 @@
   window.page = {
     deactivatePage: function () {
       toggleActivation();
-      findsFieldsetsDisconnects(true);
+      disconnectFieldset(true);
       isActivate = true;
       removeCard();
       removePins();

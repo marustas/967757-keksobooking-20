@@ -19,7 +19,7 @@
 
   var drag = function (evt) {
     evt.preventDefault();
-    var startCoords = {
+    var initialCoords = {
       x: evt.clientX,
       y: evt.clientY
     };
@@ -35,26 +35,26 @@
       moveEvt.preventDefault();
 
       var shift = {
-        x: startCoords.x - moveEvt.clientX,
-        y: startCoords.y - moveEvt.clientY
+        x: initialCoords.x - moveEvt.clientX,
+        y: initialCoords.y - moveEvt.clientY
       };
 
-      startCoords = {
+      initialCoords = {
         x: moveEvt.clientX,
         y: moveEvt.clientY
       };
 
-      var mapPinMainPosition = {
+      var mainPinPosition = {
         x: mapPinMain.offsetLeft - shift.x,
         y: mapPinMain.offsetTop - shift.y
       };
 
-      if (mapPinMainPosition.x >= mapBorder.LEFT && mapPinMainPosition.x <= mapBorder.RIGHT) {
-        mapPinMain.style.left = mapPinMainPosition.x + 'px';
+      if (mainPinPosition.x >= mapBorder.LEFT && mainPinPosition.x <= mapBorder.RIGHT) {
+        mapPinMain.style.left = mainPinPosition.x + 'px';
       }
 
-      if (mapPinMainPosition.y >= mapBorder.TOP && mapPinMainPosition.y <= mapBorder.BOTTOM) {
-        mapPinMain.style.top = mapPinMainPosition.y + 'px';
+      if (mainPinPosition.y >= mapBorder.TOP && mainPinPosition.y <= mapBorder.BOTTOM) {
+        mapPinMain.style.top = mainPinPosition.y + 'px';
       }
 
       window.address.fillAddress();

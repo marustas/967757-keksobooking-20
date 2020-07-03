@@ -3,11 +3,11 @@
 (function () {
   var FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
 
-  var avatarFileChooser = document.querySelector('.ad-form-header__input');
+  var avatarFile = document.querySelector('.ad-form-header__input');
   var avatarPreview = document.querySelector('.ad-form-header__preview img');
-  var adFormPhotoContainer = document.querySelector('.ad-form__photo-container');
-  var adPhotoFileChooser = document.querySelector('.ad-form__upload');
-  var wasteDiv = document.querySelector('.ad-form__photo');
+  var photoContainer = document.querySelector('.ad-form__photo-container');
+  var photoFile = document.querySelector('.ad-form__upload');
+  var photoDiv = document.querySelector('.ad-form__photo');
 
   var setFileSelectHandler = function (evt, preview) {
     var fileChooser = evt.currentTarget;
@@ -21,11 +21,11 @@
       if (matches) {
         var reader = new FileReader();
         reader.addEventListener('load', function () {
-          if (fileChooser === adPhotoFileChooser) {
+          if (fileChooser === photoFile) {
             if (currentIndex === 0) {
-              wasteDiv.remove();
+              photoDiv.remove();
             }
-            addNewAdPhotoDiv(createNewAdPhoto(fileName, reader.result));
+            addNewPhotoDiv(createNewPhoto(fileName, reader.result));
           } else {
             preview.src = reader.result;
           }
@@ -35,7 +35,7 @@
     });
   };
 
-  var createNewAdPhoto = function (fileName, link) {
+  var createNewPhoto = function (fileName, link) {
     var newPhotoDiv = createNewDiv();
     var img = document.createElement('img');
     img.src = link;
@@ -46,8 +46,8 @@
     return newPhotoDiv;
   };
 
-  var addNewAdPhotoDiv = function (div) {
-    adFormPhotoContainer.insertBefore(div, adFormPhotoContainer.lastChild);
+  var addNewPhotoDiv = function (div) {
+    photoContainer.insertBefore(div, photoContainer.lastChild);
   };
 
   var createNewDiv = function () {
@@ -58,22 +58,22 @@
 
   var resetForm = function () {
     avatarPreview.src = 'img/muffin-grey.svg';
-    resetAdPhotoContainer();
+    resetPhotoContainer();
   };
 
-  var resetAdPhotoContainer = function () {
-    adFormPhotoContainer.innerHTML = '';
-    adFormPhotoContainer.appendChild(adPhotoFileChooser);
-    wasteDiv = createNewDiv();
-    addNewAdPhotoDiv(wasteDiv);
+  var resetPhotoContainer = function () {
+    photoContainer.innerHTML = '';
+    photoContainer.appendChild(photoFile);
+    photoDiv = createNewDiv();
+    addNewPhotoDiv(photoDiv);
   };
 
-  var returnsAvatar = function (evt) {
+  var returnAvatar = function (evt) {
     setFileSelectHandler(evt, avatarPreview);
   };
 
-  adPhotoFileChooser.addEventListener('change', setFileSelectHandler);
-  avatarFileChooser.addEventListener('change', returnsAvatar);
+  photoFile.addEventListener('change', setFileSelectHandler);
+  avatarFile.addEventListener('change', returnAvatar);
 
   window.image = {
     resetForm: resetForm,

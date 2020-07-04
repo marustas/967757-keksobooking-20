@@ -10,7 +10,7 @@
   var successElement;
   var errorElement;
 
-  var uploadForm = function (evt) {
+  var onFormUpload = function (evt) {
     var formData = new FormData(adForm);
     window.backend.upload(formData, uploadSucceed, uploadFail);
     evt.preventDefault();
@@ -42,7 +42,7 @@
     error.remove();
   };
 
-  var removeElemClick = function (evt) {
+  var onElementRemove = function (evt) {
     if (evt.target === successElement || errorElement) {
       success.remove();
       error.remove();
@@ -50,13 +50,13 @@
   };
 
   errorButton.addEventListener('click', onButtonClick);
-  success.addEventListener('click', removeElemClick);
-  error.addEventListener('click', removeElemClick);
+  success.addEventListener('click', onElementRemove);
+  error.addEventListener('click', onElementRemove);
 
   document.addEventListener('keydown', onKeyClose);
   document.addEventListener('keydown', onKeyClose);
 
-  adForm.addEventListener('submit', uploadForm);
+  adForm.addEventListener('submit', onFormUpload);
 
 
 })();

@@ -25,7 +25,7 @@
     pinImg.src = pin.author.avatar;
     pinImg.alt = pin.offer.title;
 
-    var pinClik = function () {
+    var clickPin = function () {
       if (mapCard) {
         mapCard.remove();
       }
@@ -33,15 +33,15 @@
     };
 
     var onPinEnter = function (evt) {
-      window.utils.keyEnter(evt, pinClik);
+      window.utils.keyEnter(evt, clickPin);
     };
 
-    var onPinClik = function (evt) {
-      window.utils.mouseClik(evt, pinClik());
+    var onPinClick = function (evt) {
+      window.utils.mouseClik(evt, clickPin());
     };
 
     pinElement.addEventListener('keydown', onPinEnter);
-    pinElement.addEventListener('mousedown', onPinClik);
+    pinElement.addEventListener('mousedown', onPinClick);
 
     return pinElement;
   };

@@ -17,7 +17,7 @@
   var mapPinMain = map.querySelector('.map__pin--main');
 
 
-  var drag = function (evt) {
+  var onMouseDown = function (evt) {
     evt.preventDefault();
     var startCoords = {
       x: evt.clientX,
@@ -71,7 +71,7 @@
     map.addEventListener('mouseup', onMouseUp);
   };
 
-  mapPinMain.addEventListener('mousedown', drag);
+  mapPinMain.addEventListener('mousedown', onMouseDown);
 
 
 })();

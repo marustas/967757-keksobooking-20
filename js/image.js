@@ -2,6 +2,8 @@
 
 (function () {
   var FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
+  var IMG_WIDTH = 70;
+  var IMG_HEIGHT = 70;
 
   var avatarFileChooser = document.querySelector('.ad-form-header__input');
   var avatarPreview = document.querySelector('.ad-form-header__preview img');
@@ -40,8 +42,8 @@
     var img = document.createElement('img');
     img.src = link;
     img.title = fileName;
-    img.width = 70;
-    img.height = 70;
+    img.width = IMG_WIDTH;
+    img.height = IMG_HEIGHT;
     newPhotoDiv.appendChild(img);
     return newPhotoDiv;
   };

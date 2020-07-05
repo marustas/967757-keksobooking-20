@@ -70,12 +70,12 @@
     addNewAdPhotoDiv(wasteDiv);
   };
 
-  var returnsAvatar = function (evt) {
+  var returnAvatarHandler = function (evt) {
     setFileSelectHandler(evt, avatarPreview);
   };
 
   adPhotoFileChooser.addEventListener('change', setFileSelectHandler);
-  avatarFileChooser.addEventListener('change', returnsAvatar);
+  avatarFileChooser.addEventListener('change', returnAvatarHandler);
 
   window.image = {
     resetForm: resetForm,
